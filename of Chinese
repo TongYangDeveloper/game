@@ -1,0 +1,148 @@
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Scanner;
+
+/**
+ * Created by lenovo on 2016/9/9.
+ */
+class  game{
+    short HpNum ;
+    short AttackNum ;
+    short comHpNum;
+    short comAttackNum;
+}
+public class helloWorld {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        game wushi = new game();
+        game linjian = new game();
+        System.out.println("\t灵之国度\n\t1.开始游戏\n\t2.退出游戏");
+
+        byte c = input.nextByte();
+        switch (c){
+            case 1:
+                System.out.println("\t选择心仪职业\n\t1.巫师\n\t2.灵剑客");
+                byte c1 = input.nextByte();
+                switch (c1) {
+                    case 1:
+                        System.out.println("\t你选择职业为巫师");
+                        wushi.HpNum = 200;
+                        wushi.comHpNum = 500;
+                        wushi.comAttackNum = 20;
+                        wushi.AttackNum = 24;
+                        // wushi.gameStart(c);
+                        System.out.println("游戏开始\t巫师VS咆哮兽");
+                        System.out.println("巫师\t当前生命值:" + wushi.HpNum + "\t当前攻击力:" + wushi.AttackNum);
+                        System.out.println("咆哮兽\t当前生命值:" + wushi.comHpNum + "\t当前攻击力:" + wushi.comAttackNum);
+                        for (byte cc = 0, i = 1, it = 0; wushi.comHpNum > 0 && wushi.HpNum > 0; i++) {
+                            System.out.println("第" + i + "回合");
+                            System.out.println("请选择技能\n1.攻击\n2.索魂咒（消耗当前HP" + "(" + (wushi.HpNum) + ")" + "的3%" + ",造成当前敌人气血的10%+巫师攻击力" + "(" + wushi.AttackNum + ")" + "*0.7");
+                            System.out.println("3.巫师的戏弄(对目标进行随机次数的攻击，每次造成伤害等于攻击力)");
+                            System.out.println("4.勾魂(巫师会造成1.5倍于攻击力的伤害，并且造成的伤害会治愈自身)");
+                            if (i % 3 == 0) {
+                                System.out.println("巫师的恩泽：巫师每3个回合就恢复5HP");
+                                wushi.HpNum += 5;
+                            }
+                            switch (cc = input.nextByte()) {
+                                case 1:
+                                    System.out.println("巫师攻击咆哮兽，造成" + wushi.AttackNum + "点伤害");
+                                    wushi.comHpNum -= wushi.AttackNum;
+                                    break;
+                                case 2:
+                                    System.out.println("巫师对咆哮兽使用索魂咒");
+                                    it = i;
+                                    wushi.HpNum -= wushi.HpNum * 0.03;
+                                    break;
+                                case 3:
+                                    System.out.println("巫师对咆哮兽使用巫师的戏弄");
+                                    for (byte i2 = 0; i2 < 5; ) {
+                                        i2 = (byte) (Math.random() * 8);
+                                        wushi.comHpNum -= wushi.AttackNum;
+                                        System.out.println("巫师的戏弄造成" + wushi.AttackNum + "点伤害");
+                                        System.out.println((byte) (Math.random() * 5));
+                                    }
+                                    break;
+                                case 4:
+                                    System.out.println("巫师对咆哮兽使用勾魂");
+                                    wushi.comHpNum -= wushi.AttackNum * 1.5;
+                                    wushi.HpNum += wushi.AttackNum * 1.5;
+                                    break;
+
+                            }
+                            if (it == i || it + 1 == i || it + 2 == i) {
+                                System.out.println("本回合索魂咒造成" + (wushi.comHpNum * 0.1 + wushi.AttackNum * 0.7) + "点伤害");
+                                wushi.comHpNum -= (wushi.comHpNum * 0.1 + wushi.AttackNum * 0.7);
+
+                            }
+
+                            System.out.println("咆哮兽攻击巫师，造成" + wushi.comAttackNum + "点伤害");
+                            wushi.HpNum -= wushi.comAttackNum;
+                            System.out.println("巫师\t当前生命值:" + wushi.HpNum + "\t当前攻击力:" + wushi.AttackNum);
+                            System.out.println("咆哮兽\t当前生命值:" + wushi.comHpNum + "\t当前攻击力:" + wushi.comAttackNum);
+                            System.out.println();
+
+                        }
+                        break;
+                    case 2:
+                        System.out.println("\t你选择的职业为灵剑客");
+                        linjian.HpNum = 300;
+                        linjian.comHpNum = 500;
+                        linjian.AttackNum = 35;
+                        linjian.comAttackNum = 20;
+                        System.out.println("游戏开始\t 灵剑客VS咆哮兽");
+                        System.out.println("灵剑客\t当前生命值:" + linjian.HpNum + "\t当前攻击力:" + linjian.AttackNum);
+                        System.out.println("咆哮兽\t当前生命值:" + linjian.comHpNum + "\t当前攻击力:" + linjian.comAttackNum);
+                        for (byte i = 1, cc = 0, it = 0; (linjian.HpNum > 0 && linjian.comHpNum > 0); i++) {
+                            System.out.println("第" + i + "回合");
+                            System.out.println("请选择技能\n1.攻击\n2.死神附体(增加当前攻击力(" + linjian.AttackNum + ")和生命值(" + linjian.HpNum + ")30%,至游戏结束)");
+                            System.out.println("3.亡灵召唤（每回合亡灵造成攻击力*0.3的伤害，持续7个回合");
+                            System.out.println("4.蚀骨(目标攻击力减少20%,持续到游戏结束)");
+                            System.out.println("5.化血狂攻(牺牲50%生命值，造成攻击力的5倍伤害)");
+                            switch (cc = input.nextByte()) {
+                                case 1:
+                                    System.out.println("灵剑客攻击咆哮兽，造成" + linjian.AttackNum + "点伤害");
+                                    linjian.comHpNum -= linjian.AttackNum;
+                                    break;
+                                case 2:
+                                    System.out.println("灵剑客使用\t死神附体");
+                                    linjian.AttackNum *= 1.3;
+                                    linjian.HpNum *= 1.3;
+                                    break;
+                                case 3:
+                                    System.out.println("灵剑客使用\t亡灵召唤");
+                                    it = i;
+                                    break;
+                                case 4:
+                                    System.out.println("灵剑客使用\t蚀骨");
+                                    linjian.comAttackNum *= 0.8;
+                                    break;
+                                case 5:
+                                    System.out.println("灵剑客使用\t化血狂攻");
+                                    linjian.HpNum *= 0.5;
+                                    linjian.comHpNum -= linjian.AttackNum * 5;
+                                    break;
+                            }
+                            if (i == it) {
+                                for (; it + 7 >= i; ) {
+                                    linjian.comHpNum -= linjian.AttackNum * 0.3;
+                                    break;
+                                }
+                            }
+                            System.out.println("咆哮兽攻击灵剑客，造成" + linjian.comAttackNum + "点伤害");
+                            linjian.HpNum -= linjian.comAttackNum;
+                            System.out.println("灵剑客\t当前生命值:" + linjian.HpNum + "\t当前攻击力:" + linjian.AttackNum);
+                            System.out.println("咆哮兽\t当前生命值:" + linjian.comHpNum + "\t当前攻击力:" + linjian.comAttackNum);
+                            System.out.println();
+                        }
+                     break;
+                }
+            case 2:
+                System.out.println("游戏结束");
+                        break;
+                }
+
+        }
+
+    }
+
+
